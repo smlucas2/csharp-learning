@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Blend for Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Beginner", "ConsoleApp1\Beginner.csproj", "{8623B025-D1A5-4EF2-BBD6-1CD50005832E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Beginner", "Practice\Beginner.csproj", "{8623B025-D1A5-4EF2-BBD6-1CD50005832E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

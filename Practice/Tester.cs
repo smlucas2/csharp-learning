@@ -2,6 +2,6 @@
 {
     public static void Main(string[] args)
     {
-        NumbersAndIntegerMath.Test();
+        BranchesAndLoops.Test();
     }
 }
