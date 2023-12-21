@@ -1,6 +1,4 @@
-﻿using System;
-
-public class LINQIntroduction
+﻿public class LINQIntroduction
 {
     public static void Test()
     {

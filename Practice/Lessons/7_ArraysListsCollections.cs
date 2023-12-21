@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-public class ArraysListsCollections
+﻿public class ArraysListsCollections
 {
     public static void Test()
     {

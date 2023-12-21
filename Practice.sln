@@ -5,7 +5,11 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Beginner", "Practice\Beginner.csproj", "{8623B025-D1A5-4EF2-BBD6-1CD50005832E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bin2Dec", "Bin2Dec\Bin2Dec.csproj", "{B912D574-CCF3-4AAA-B7EE-665A1583CF83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bin2Dec", "Bin2Dec\Bin2Dec.csproj", "{B912D574-CCF3-4AAA-B7EE-665A1583CF83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{71809C12-D38F-45ED-9386-517EDD17794A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Learning", "Learning", "{A7894D8B-A533-4E1F-8677-E995AD7DB7E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8623B025-D1A5-4EF2-BBD6-1CD50005832E} = {A7894D8B-A533-4E1F-8677-E995AD7DB7E9}
+		{B912D574-CCF3-4AAA-B7EE-665A1583CF83} = {71809C12-D38F-45ED-9386-517EDD17794A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6CF761C5-1A90-47AA-854D-F66D15B5F731}
