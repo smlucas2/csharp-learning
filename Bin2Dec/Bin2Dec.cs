@@ -1,9 +1,18 @@
-﻿public class Bin2Dec
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Beginner.Projects.Bin2Dec;
+
+public class Bin2Dec
 {
     public decimal ToDecimal(string bin)
     {
         checkValidBinary(bin);
         decimal dec = Convert.ToInt64(bin, 2);
+        Console.WriteLine(dec);
         return dec;
     }
 

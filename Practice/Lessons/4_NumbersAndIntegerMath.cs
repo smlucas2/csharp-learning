@@ -1,4 +1,6 @@
-﻿public class NumbersAndIntegerMath
+﻿using System.ComponentModel;
+
+public class NumbersAndIntegerMath
 {
     public static void Test()
     {
