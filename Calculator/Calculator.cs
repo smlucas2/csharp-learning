@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text;
 
+//FIXME after hitting EQ, the next operation fails
 class Calculator
 {
     private StringBuilder previousValue = new StringBuilder();
@@ -14,28 +15,49 @@ class Calculator
         // we will assume userInput will only be numbers or operators as we intend to use buttons later
         while (true)
         {
-            // TODO figure out how to launch the console and allow user input
             string userInput = Console.ReadLine();
             if (Enum.IsDefined(typeof(Operator), userInput))
             {
-                if (this.operation == null && this.operation != Operator.EQ)
+                Operator userOperator = (Operator)Enum.Parse(typeof(Operator), userInput);
+                if (userOperator == Operator.EQ)
                 {
-                    this.operation = (Operator) Enum.Parse(typeof(Operator), userInput);
-                    this.previousValue.Append(this.currentValue.ToString());
+                    decimal calculatedValue;
+                    if (this.previousValue.Length > 0)
+                        calculatedValue = CalculateValue();
+                    else
+                        calculatedValue = Decimal.Parse(this.currentValue.ToString());
+                    // TODO move this to logging
+                    Console.WriteLine($"[DISPLAY] {calculatedValue.ToString()}");
+                    this.previousValue.Clear();
                     this.currentValue.Clear();
                 }
                 else
                 {
-                    decimal calculatedValue = CalculateValue();
-                    this.previousValue.Clear();
-                    this.previousValue.Append(calculatedValue.ToString());
-                    Console.WriteLine(calculatedValue.ToString());
-                    if (this.operation == Operator.EQ)
-                        break;
+                    if (this.operation == null)
+                    {
+                        this.operation = userOperator;
+                        this.previousValue.Append(this.currentValue.ToString());
+                        this.currentValue.Clear();
+                    }
+                    else
+                    {
+                        decimal calculatedValue = CalculateValue();
+                        this.operation = userOperator;
+                        // TODO move this to logging
+                        Console.WriteLine($"[DISPLAY] {calculatedValue.ToString()}");
+                        this.previousValue.Clear();
+                        this.previousValue.Append(calculatedValue.ToString());
+                        this.currentValue.Clear();
+
+                    }
                 }
             }
             else
+            {
                 this.currentValue.Append(userInput);
+                // TODO move this to logging
+                Console.WriteLine($"[DISPLAY] {this.currentValue.ToString()}");
+            }
         }
     }
 
