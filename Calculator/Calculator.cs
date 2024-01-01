@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Text;
 
-//FIXME after hitting EQ, the next operation fails
 class Calculator
 {
     private StringBuilder previousValue = new StringBuilder();
     private StringBuilder currentValue = new StringBuilder();
-    private Operator? operation = null;
+    private Operator? previousOperation = null;
 
     public Calculator() { }
 
@@ -16,68 +15,65 @@ class Calculator
         while (true)
         {
             string userInput = Console.ReadLine();
-            if (Enum.IsDefined(typeof(Operator), userInput))
+            Boolean isOperator = Enum.IsDefined(typeof(Operator), userInput);
+            if (isOperator)
             {
                 Operator userOperator = (Operator)Enum.Parse(typeof(Operator), userInput);
                 if (userOperator == Operator.EQ)
                 {
-                    decimal calculatedValue;
-                    if (this.previousValue.Length > 0)
-                        calculatedValue = CalculateValue();
-                    else
-                        calculatedValue = Decimal.Parse(this.currentValue.ToString());
-                    // TODO move this to logging
-                    Console.WriteLine($"[DISPLAY] {calculatedValue.ToString()}");
+                    decimal calculatedValue = this.previousValue.Length > 0 ? CalculateValue() : Decimal.Parse(this.currentValue.ToString());
                     this.previousValue.Clear();
-                    this.currentValue.Clear();
+                    this.previousValue.Append(calculatedValue.ToString());
+                    this.previousOperation = null;
                 }
                 else
                 {
-                    if (this.operation == null)
-                    {
-                        this.operation = userOperator;
+                    if (this.previousOperation == null)
                         this.previousValue.Append(this.currentValue.ToString());
-                        this.currentValue.Clear();
-                    }
                     else
                     {
                         decimal calculatedValue = CalculateValue();
-                        this.operation = userOperator;
-                        // TODO move this to logging
-                        Console.WriteLine($"[DISPLAY] {calculatedValue.ToString()}");
                         this.previousValue.Clear();
                         this.previousValue.Append(calculatedValue.ToString());
-                        this.currentValue.Clear();
-
                     }
+                    this.previousOperation = userOperator;
                 }
+                this.currentValue.Clear();
             }
             else
             {
                 this.currentValue.Append(userInput);
                 // TODO move this to logging
-                Console.WriteLine($"[DISPLAY] {this.currentValue.ToString()}");
+                Console.WriteLine($"[DISPLAY INPUT VALUE] {this.currentValue.ToString()}");
             }
         }
     }
 
     private decimal CalculateValue()
     {
+        decimal calculatedValue;
         decimal pValue = Decimal.Parse(this.previousValue.ToString());
         decimal cValue = Decimal.Parse(this.currentValue.ToString());
-        switch (this.operation)
+        switch (this.previousOperation)
         {
             case Operator.ADD:
-                return pValue + cValue;
+                calculatedValue = pValue + cValue;
+                break;
             case Operator.SUB:
-                return pValue - cValue;
+                calculatedValue = pValue - cValue;
+                break;
             case Operator.MUL:
-                return pValue * cValue;
+                calculatedValue = pValue * cValue;
+                break;
             case Operator.DIV:
-                return pValue / cValue;
+                calculatedValue = pValue / cValue;
+                break;
             default:
                 throw new NotImplementedException("Missing operator! This should never be reached.");
         }
+        // TODO move this to logging
+        Console.WriteLine($"[DISPLAY CALCULATED VALUE] {calculatedValue.ToString()}");
+        return calculatedValue;
     }
 
     private enum Operator
