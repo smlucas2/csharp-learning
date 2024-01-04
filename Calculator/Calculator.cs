@@ -1,17 +1,13 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 
 class Calculator
 {
-    private string displayValue = "";
-    //TODO add file path to log file, use same location as Calculator.cs
-    private string logFilePath = "";
-    //TODO add user inputs, calculations, etc to log as calculator runs!
-    private StringBuilder log = new StringBuilder();
+    Boolean usedEQ = false;
+    Boolean usedC = false;
+    Boolean usedCE = false;
+    Boolean usedOP = false;
 
-    //TODO fix performing a new calculation directly after pressing EQ not working correctly
-    //TODO add logging
-    //TODO move bulk of logic outside of run method and break apart to make more readable. run should be a lower level method
+    //TODO implement new boolean flags
     //TODO display ERR if any calculation has over 8 digits (trim down to 3 decimal places)
     //TODO add 8 digit input restriction (not including decimal marker)
     //TODO add 3 decimal place restriction on input
@@ -20,67 +16,85 @@ class Calculator
     //TODO make sure logic is condense and readable
     public void run()
     {
-        Boolean opPreviouslyUsed = false;
+        string displayValue = "";
         StringBuilder currentVal = new StringBuilder();
         StringBuilder previousVal = new StringBuilder();
-        Operator currentOp;
-        Operator? previousOp = null;
 
         while (true)
         {
             string userInput = Console.ReadLine();
+
             Boolean isOperator = Enum.IsDefined(typeof(Operator), userInput);
-
             if (isOperator)
-            {
-                currentOp = (Operator)Enum.Parse(typeof(Operator), userInput);
-
-                if (currentOp == Operator.C || currentOp == Operator.CE)
-                {
-                    if (currentOp == Operator.CE)
-                    {
-                        previousVal.Clear();
-                        previousOp = null;
-                    }
-                    currentVal.Clear();
-                    this.displayValue = "";
-                    opPreviouslyUsed = false;
-                }
-                else
-                {
-                    if (previousOp != Operator.EQ && !opPreviouslyUsed)
-                    {
-                        if (previousVal.Length != 0)
-                            currentVal = Calculate(previousVal, currentVal, previousOp);
-
-                        previousVal.Clear();
-                        previousVal.Append(currentVal.ToString());
-                        currentVal.Clear();
-                    }
-
-                    previousOp = currentOp;
-                    opPreviouslyUsed = true;
-                }
-            }
+                displayValue = OperatorEntered(userInput, currentVal, previousVal);
             else
-            {
-                currentVal.Append(userInput);
-                opPreviouslyUsed = false;
-                this.displayValue = currentVal.ToString();
-            }
+                displayValue = ValueEntered(userInput, currentVal);
 
-            Display();
-            Log();
+            Display(displayValue);
         }
     }
 
-    private StringBuilder Calculate(StringBuilder previousValue, StringBuilder currentValue, Operator? op)
+    private string OperatorEntered(string userInput, StringBuilder currentVal, StringBuilder previousVal)
+    {
+        string displayValue;
+
+        Operator currentOp = (Operator)Enum.Parse(typeof(Operator), userInput);
+        if (currentOp == Operator.C || currentOp == Operator.CE)
+        {
+            if (currentOp == Operator.CE)
+            {
+                previousVal.Clear();
+                this.previousOp = null;
+            }
+
+            currentVal.Clear();
+            this.lastInputWasOp = false;
+            displayValue = "";
+        }
+        else
+        {
+            if (this.previousOp != Operator.EQ && !this.lastInputWasOp)
+            {
+                if (previousVal.Length != 0)
+                    currentVal = Calculate(previousVal, currentVal);
+
+                previousVal.Clear();
+                previousVal.Append(currentVal.ToString());
+                displayValue = currentVal.ToString();
+                currentVal.Clear();
+            }
+            else if (this.previousOp == Operator.EQ)
+            {
+                displayValue = previousVal.ToString();
+                currentVal.Clear();
+            }
+            else
+                displayValue = currentVal.ToString();
+
+            this.previousOp = currentOp;
+            this.lastInputWasOp = true;
+        }
+
+        return displayValue;
+    }
+
+    private string ValueEntered(string userInput, StringBuilder currentVal)
+    {
+        if (this.previousOp == Operator.EQ)
+            currentVal.Clear();
+
+        currentVal.Append(userInput);
+        this.lastInputWasOp = false;
+        return currentVal.ToString();
+    }
+
+    private StringBuilder Calculate(StringBuilder previousValue, StringBuilder currentValue)
     {
         decimal calculatedValue;
         decimal pValue = Decimal.Parse(previousValue.ToString());
         decimal cValue = Decimal.Parse(currentValue.ToString());
 
-        switch (op)
+        switch (this.previousOp)
         {
             case Operator.ADD:
                 calculatedValue = pValue + cValue;
@@ -95,21 +109,16 @@ class Calculator
                 calculatedValue = pValue / cValue;
                 break;
             default:
-                throw new NotImplementedException($"Unsupported operator for calculations: {op.ToString()}");
+                throw new NotImplementedException($"Unsupported operator for calculations.");
         }
 
-        this.displayValue = calculatedValue.ToString();
         return new StringBuilder(calculatedValue.ToString());
     }
 
-    private void Display()
+    private void Display(string displayValue)
     {
-        Console.WriteLine($"                [{this.displayValue}]");
-    }
-
-    private void Log()
-    {
-        File.WriteAllText(this.logFilePath + "log.txt", this.log.ToString());
+        //TODO this should update actual display down the road
+        Console.WriteLine($"                [{displayValue}]");
     }
 
     private enum Operator
