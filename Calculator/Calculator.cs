@@ -2,12 +2,6 @@
 
 class Calculator
 {
-    Boolean usedEQ = false;
-    Boolean usedC = false;
-    Boolean usedCE = false;
-    Boolean usedOP = false;
-
-    //TODO implement new boolean flags
     //TODO display ERR if any calculation has over 8 digits (trim down to 3 decimal places)
     //TODO add 8 digit input restriction (not including decimal marker)
     //TODO add 3 decimal place restriction on input
@@ -16,109 +10,122 @@ class Calculator
     //TODO make sure logic is condense and readable
     public void run()
     {
-        string displayValue = "";
+        string displayVal;
+        Operator? lastOpUsed = null;
+        Boolean wasLastInputNum = false;
         StringBuilder currentVal = new StringBuilder();
         StringBuilder previousVal = new StringBuilder();
 
         while (true)
         {
             string userInput = Console.ReadLine();
+            ValidateInput(userInput);
 
-            Boolean isOperator = Enum.IsDefined(typeof(Operator), userInput);
-            if (isOperator)
-                displayValue = OperatorEntered(userInput, currentVal, previousVal);
+            Boolean isOp = Enum.IsDefined(typeof(Operator), userInput);
+            if (isOp)
+            {
+                Operator currentOp = (Operator)Enum.Parse(typeof(Operator), userInput);
+                displayVal = OperatorEntered(currentOp, currentVal, previousVal, wasLastInputNum, lastOpUsed);
+                if (currentOp != Operator.C && currentOp != Operator.CE)
+                    lastOpUsed = currentOp;
+                wasLastInputNum = false;
+            }
             else
-                displayValue = ValueEntered(userInput, currentVal);
+            {
+                displayVal = NumberEntered(userInput, currentVal, wasLastInputNum, lastOpUsed);
+                wasLastInputNum = true;
+            }
 
-            Display(displayValue);
+            Display(displayVal);
         }
     }
 
-    private string OperatorEntered(string userInput, StringBuilder currentVal, StringBuilder previousVal)
+    private void ValidateInput(string userInput)
     {
-        string displayValue;
+        //TODO
+    }
 
-        Operator currentOp = (Operator)Enum.Parse(typeof(Operator), userInput);
+    private string OperatorEntered(Operator currentOp, StringBuilder currentVal, StringBuilder previousVal, Boolean wasLastInputNum, Operator? lastOpUsed)
+    {
+        string displayVal;
+
         if (currentOp == Operator.C || currentOp == Operator.CE)
         {
             if (currentOp == Operator.CE)
-            {
                 previousVal.Clear();
-                this.previousOp = null;
-            }
 
             currentVal.Clear();
-            this.lastInputWasOp = false;
-            displayValue = "";
+            displayVal = "";
         }
         else
         {
-            if (this.previousOp != Operator.EQ && !this.lastInputWasOp)
+            if (lastOpUsed == Operator.EQ && !wasLastInputNum)
+            {
+                displayVal = previousVal.ToString();
+                currentVal.Clear();
+            }
+            else if (wasLastInputNum)
             {
                 if (previousVal.Length != 0)
-                    currentVal = Calculate(previousVal, currentVal);
+                    currentVal = Calculate(previousVal, currentVal, lastOpUsed);
 
                 previousVal.Clear();
                 previousVal.Append(currentVal.ToString());
-                displayValue = currentVal.ToString();
-                currentVal.Clear();
-            }
-            else if (this.previousOp == Operator.EQ)
-            {
-                displayValue = previousVal.ToString();
+                displayVal = currentVal.ToString();
                 currentVal.Clear();
             }
             else
-                displayValue = currentVal.ToString();
-
-            this.previousOp = currentOp;
-            this.lastInputWasOp = true;
+            {
+                if (currentVal.Length > 0)
+                    displayVal = currentVal.ToString();
+                else
+                    displayVal = previousVal.ToString();
+            }
         }
 
-        return displayValue;
+        return displayVal;
     }
 
-    private string ValueEntered(string userInput, StringBuilder currentVal)
+    private string NumberEntered(string userInput, StringBuilder currentVal, Boolean wasLastInputNum, Operator? lastOpUsed)
     {
-        if (this.previousOp == Operator.EQ)
+        if (lastOpUsed == Operator.EQ && !wasLastInputNum)
             currentVal.Clear();
 
         currentVal.Append(userInput);
-        this.lastInputWasOp = false;
         return currentVal.ToString();
     }
 
-    private StringBuilder Calculate(StringBuilder previousValue, StringBuilder currentValue)
+    private StringBuilder Calculate(StringBuilder previousVal, StringBuilder currentVal, Operator? lastOpUsed)
     {
-        decimal calculatedValue;
-        decimal pValue = Decimal.Parse(previousValue.ToString());
-        decimal cValue = Decimal.Parse(currentValue.ToString());
+        decimal result;
+        decimal x = Decimal.Parse(previousVal.ToString());
+        decimal y = Decimal.Parse(currentVal.ToString());
 
-        switch (this.previousOp)
+        switch (lastOpUsed)
         {
             case Operator.ADD:
-                calculatedValue = pValue + cValue;
+                result = x + y;
                 break;
             case Operator.SUB:
-                calculatedValue = pValue - cValue;
+                result = x - y;
                 break;
             case Operator.MUL:
-                calculatedValue = pValue * cValue;
+                result = x * y;
                 break;
             case Operator.DIV:
-                calculatedValue = pValue / cValue;
+                result = x / y;
                 break;
             default:
                 throw new NotImplementedException($"Unsupported operator for calculations.");
         }
 
-        return new StringBuilder(calculatedValue.ToString());
+        return new StringBuilder(result.ToString());
     }
 
-    private void Display(string displayValue)
+    private void Display(string displayVal)
     {
         //TODO this should update actual display down the road
-        Console.WriteLine($"                [{displayValue}]");
+        Console.WriteLine($"                [{displayVal}]");
     }
 
     private enum Operator
