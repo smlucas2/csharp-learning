@@ -1,13 +1,9 @@
 ﻿using System.Text;
+using System.Windows.Markup;
 
 class Calculator
 {
-    //TODO display ERR if any calculation has over 8 digits (trim down to 3 decimal places)
-    //TODO add 8 digit input restriction (not including decimal marker)
-    //TODO add 3 decimal place restriction on input
-    //TODO add +/- button to toggle positive or negative number
     //TODO convert console output to actual buttons and display (create button classes!)
-    //TODO make sure logic is condense and readable
     public void run()
     {
         string displayVal;
@@ -18,72 +14,103 @@ class Calculator
 
         while (true)
         {
+            //TODO this should come from "button presses"
             string userInput = Console.ReadLine();
-            ValidateInput(userInput);
 
             Boolean isOp = Enum.IsDefined(typeof(Operator), userInput);
             if (isOp)
             {
                 Operator currentOp = (Operator)Enum.Parse(typeof(Operator), userInput);
                 displayVal = OperatorEntered(currentOp, currentVal, previousVal, wasLastInputNum, lastOpUsed);
-                if (currentOp != Operator.C && currentOp != Operator.CE)
+                //we only care about the "last operator used" if it can be used in calculations
+                if (currentOp != Operator.C && currentOp != Operator.CE && currentOp != Operator.PM)
                     lastOpUsed = currentOp;
                 wasLastInputNum = false;
             }
-            else
+            else if (ValidValue(currentVal))
             {
                 displayVal = NumberEntered(userInput, currentVal, wasLastInputNum, lastOpUsed);
                 wasLastInputNum = true;
             }
+            else
+                displayVal = "ERR";
 
             Display(displayVal);
         }
     }
 
-    private void ValidateInput(string userInput)
+    private Boolean ValidValue(StringBuilder currentVal)
     {
-        //TODO
+        string valStr = currentVal.ToString();
+        int length = valStr.Length;
+
+        //our calculator will only allow up to 8 digits (excluding decimal point)
+        Boolean validLength = false;
+        if ((valStr.Contains('.') && length <= 8) || length <= 7)
+            validLength = true;
+
+        //our calculator will only allow up to 3 decimal places
+        Boolean validDecimals = false;
+        if (!valStr.Contains(".") || valStr.Split('.')[1].Length < 3)
+            validDecimals = true;
+
+        return validLength && validDecimals;
     }
 
     private string OperatorEntered(Operator currentOp, StringBuilder currentVal, StringBuilder previousVal, Boolean wasLastInputNum, Operator? lastOpUsed)
     {
-        string displayVal;
-
-        if (currentOp == Operator.C || currentOp == Operator.CE)
+        switch (currentOp)
         {
-            if (currentOp == Operator.CE)
-                previousVal.Clear();
+            case Operator.C:
+            case Operator.CE:
+                return HandleCCE(currentOp, currentVal, previousVal);
+            case Operator.PM:
+                return HandlePM(currentVal);
+            default:
+                return HandleArithmetic(currentVal, previousVal, wasLastInputNum, lastOpUsed);
+        }
+    }
 
+    private string HandleCCE(Operator currentOp, StringBuilder currentVal, StringBuilder previousVal)
+    {
+        if (currentOp == Operator.CE)
+            previousVal.Clear();
+        currentVal.Clear();
+        return "";
+    }
+
+    private string HandlePM(StringBuilder currentVal)
+    {
+        decimal numToInvert = Decimal.Parse(currentVal.ToString());
+        currentVal.Clear();
+        currentVal.Append((numToInvert * -1).ToString());
+        return currentVal.ToString();
+    }
+
+    private string HandleArithmetic(StringBuilder currentVal, StringBuilder previousVal, Boolean wasLastInputNum, Operator? lastOpUsed)
+    {
+        if (lastOpUsed == Operator.EQ && !wasLastInputNum)
+        {
             currentVal.Clear();
-            displayVal = "";
+            return previousVal.ToString();
+        }
+        else if (wasLastInputNum)
+        {
+            if (previousVal.Length != 0)
+                currentVal = Calculate(previousVal, currentVal, lastOpUsed);
+
+            previousVal.Clear();
+            previousVal.Append(currentVal.ToString());
+            currentVal.Clear();
+            return previousVal.ToString();
         }
         else
         {
-            if (lastOpUsed == Operator.EQ && !wasLastInputNum)
-            {
-                displayVal = previousVal.ToString();
-                currentVal.Clear();
-            }
-            else if (wasLastInputNum)
-            {
-                if (previousVal.Length != 0)
-                    currentVal = Calculate(previousVal, currentVal, lastOpUsed);
-
-                previousVal.Clear();
-                previousVal.Append(currentVal.ToString());
-                displayVal = currentVal.ToString();
-                currentVal.Clear();
-            }
+            if (currentVal.Length > 0)
+                return currentVal.ToString();
             else
-            {
-                if (currentVal.Length > 0)
-                    displayVal = currentVal.ToString();
-                else
-                    displayVal = previousVal.ToString();
-            }
+                return previousVal.ToString();
         }
-
-        return displayVal;
     }
 
     private string NumberEntered(string userInput, StringBuilder currentVal, Boolean wasLastInputNum, Operator? lastOpUsed)
@@ -119,6 +146,8 @@ class Calculator
                 throw new NotImplementedException($"Unsupported operator for calculations.");
         }
 
+        //our calculator only allows up to 3 decimal places, so we will round any calculation results that exceed it
+        result = decimal.Round(result, 3);
         return new StringBuilder(result.ToString());
     }
 
@@ -136,6 +165,7 @@ class Calculator
         DIV,
         EQ,
         C,
-        CE
+        CE,
+        PM
     }
 }
