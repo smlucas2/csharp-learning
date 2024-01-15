@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
         Title="Window1" Height="400" Width="350" Background="#FF9E9C9C">
-    <Grid HorizontalAlignment="Center" Height="248" Margin="0,119,0,0" VerticalAlignment="Top" Width="330">
+    <Grid HorizontalAlignment="Center" Height="357" Margin="0,10,0,0" VerticalAlignment="Top" Width="330">
         <Grid.RowDefinitions>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -20,25 +21,25 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Name="CE_Button" Click="CE_Button_Click" Grid.Column="0" Grid.Row="0">CE</Button>
-        <Button Name="C_Button" Click="C_Button_Click"  Grid.Column="1" Grid.Row="0">C</Button>
-        <Button Name="PM_Button" Click="PM_Button_Click" Grid.Column="2" Grid.Row="0">+/-</Button>
-        <Button Name="Seven_Button" Click="Seven_Button_Click" Grid.Column="0" Grid.Row="1">7</Button>
-        <Button Name="Eight_Button" Click="Eight_Button_Click" Grid.Column="1" Grid.Row="1">8</Button>
-        <Button Name="Nine_Button" Click="Nine_Button_Click"  Grid.Column="2" Grid.Row="1">9</Button>
-        <Button Name="Plus_Button" Click="Plus_Button_Click" Grid.Column="3" Grid.Row="1">+</Button>
-        <Button Name="Four_Button" Click="Four_Button_Click" Grid.Column="0" Grid.Row="2">4</Button>
-        <Button Name="Five_Button" Click="Five_Button_Click" Grid.Column="1" Grid.Row="2">5</Button>
-        <Button Name="Six_Button" Click="Six_Button_Click" Grid.Column="2" Grid.Row="2">6</Button>
-        <Button Name="Minus_Button" Click="Minus_Button_Click" Grid.Column="3" Grid.Row="2">-</Button>
-        <Button Name="Three_Button" Click="Three_Button_Click" Grid.Column="0" Grid.Row="3">3</Button>
-        <Button Name="Two_Button" Click="Two_Button_Click" Grid.Column="1" Grid.Row="3">2</Button>
-        <Button Name="One_Button" Click="One_Button_Click" Grid.Column="2" Grid.Row="3">1</Button>
-        <Button Name="Mult_Button" Click="Mult_Button_Click" Grid.Column="3" Grid.Row="3">x</Button>
-        <Button Name="Zero_Button" Click="Zero_Button_Click" Grid.Column="0" Grid.Row="4">0</Button>
-        <Button Name="Dot_Button" Click="Dot_Button_Click" Grid.Column="1" Grid.Row="4">.</Button>
-        <Button Name="Equals_Button" Click="Equals_Button_Click" Grid.Column="2" Grid.Row="4">=</Button>
-        <Button Name="Divide_Button" Click="Divide_Button_Click" Grid.Column="3" Grid.Row="4">/</Button>
-        <TextBlock x:Name="DisplayTextBlock" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="102" Margin="0,-107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" TextAlignment="Center" FontWeight="Bold" FontSize="65" Background="#FFFDFDFD" Text="{Binding SomeText,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" Visibility="Visible" IsEnabled="True"/>
+        <Button Name="CE_Button" Click="CE_Button_Click" Grid.Column="0" Grid.Row="1">CE</Button>
+        <Button Name="C_Button" Click="C_Button_Click"  Grid.Column="1" Grid.Row="1">C</Button>
+        <Button Name="PM_Button" Click="PM_Button_Click" Grid.Column="2" Grid.Row="1">+/-</Button>
+        <Button Name="Seven_Button" Click="Seven_Button_Click" Grid.Column="0" Grid.Row="2">7</Button>
+        <Button Name="Eight_Button" Click="Eight_Button_Click" Grid.Column="1" Grid.Row="2">8</Button>
+        <Button Name="Nine_Button" Click="Nine_Button_Click"  Grid.Column="2" Grid.Row="2">9</Button>
+        <Button Name="Plus_Button" Click="Plus_Button_Click" Grid.Column="3" Grid.Row="2">+</Button>
+        <Button Name="Four_Button" Click="Four_Button_Click" Grid.Column="0" Grid.Row="3">4</Button>
+        <Button Name="Five_Button" Click="Five_Button_Click" Grid.Column="1" Grid.Row="3">5</Button>
+        <Button Name="Six_Button" Click="Six_Button_Click" Grid.Column="2" Grid.Row="3">6</Button>
+        <Button Name="Minus_Button" Click="Minus_Button_Click" Grid.Column="3" Grid.Row="3">-</Button>
+        <Button Name="Three_Button" Click="Three_Button_Click" Grid.Column="0" Grid.Row="4">3</Button>
+        <Button Name="Two_Button" Click="Two_Button_Click" Grid.Column="1" Grid.Row="4">2</Button>
+        <Button Name="One_Button" Click="One_Button_Click" Grid.Column="2" Grid.Row="4">1</Button>
+        <Button Name="Mult_Button" Click="Mult_Button_Click" Grid.Column="3" Grid.Row="4">x</Button>
+        <Button Name="Zero_Button" Click="Zero_Button_Click" Grid.Column="0" Grid.Row="5">0</Button>
+        <Button Name="Dot_Button" Click="Dot_Button_Click" Grid.Column="1" Grid.Row="5">.</Button>
+        <Button Name="Equals_Button" Click="Equals_Button_Click" Grid.Column="2" Grid.Row="5">=</Button>
+        <Button Name="Divide_Button" Click="Divide_Button_Click" Grid.Column="3" Grid.Row="5">/</Button>
+        <TextBlock x:Name="DisplayTextBlock" TextWrapping="Wrap" Text="{Binding SomeText}" RenderTransformOrigin="1.242,4.317" Grid.ColumnSpan="4" Margin="0,-5,0,0" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" Background="White" Width="330" Height="60"/>
     </Grid>
 </Window>

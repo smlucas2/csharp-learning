@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Windows.Markup;
 
+//TODO fix bug concerning operator after using PM to change sign
 class CalculatorEngine
 {
     private Operator? lastOpUsed = null;
