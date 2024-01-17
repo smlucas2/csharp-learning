@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bin2Dec", "Bin2Dec\Bin2Dec.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{AE5A3C62-3984-44DB-9060-0A566636ED33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{B11F72C1-05A9-4457-8898-FCB0EACBCE58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator", "Calculator\Calculator.csproj", "{B11F72C1-05A9-4457-8898-FCB0EACBCE58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VigenereCipher", "VigenereCipher\VigenereCipher.csproj", "{79848277-99E7-4B27-8ED2-A57F200B0B25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{B11F72C1-05A9-4457-8898-FCB0EACBCE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B11F72C1-05A9-4457-8898-FCB0EACBCE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B11F72C1-05A9-4457-8898-FCB0EACBCE58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79848277-99E7-4B27-8ED2-A57F200B0B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79848277-99E7-4B27-8ED2-A57F200B0B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79848277-99E7-4B27-8ED2-A57F200B0B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79848277-99E7-4B27-8ED2-A57F200B0B25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B912D574-CCF3-4AAA-B7EE-665A1583CF83} = {AE5A3C62-3984-44DB-9060-0A566636ED33}
 		{B11F72C1-05A9-4457-8898-FCB0EACBCE58} = {AE5A3C62-3984-44DB-9060-0A566636ED33}
+		{79848277-99E7-4B27-8ED2-A57F200B0B25} = {AE5A3C62-3984-44DB-9060-0A566636ED33}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6CF761C5-1A90-47AA-854D-F66D15B5F731}
