@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardMemoryGame
+namespace CardMemoryGame.CardGameComponents.Cards.CardState
 {
-    class GameTimer
+    interface CardState
     {
     }
 }
