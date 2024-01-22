@@ -9,6 +9,6 @@
       Title="StartupPage">
 
     <Grid>
-        
+        <Button x:Name="Start_Button" Click="Start_Button_Click" Content="START" HorizontalAlignment="Center" Height="130" VerticalAlignment="Center" Width="352" Background="#FF20E22C"/>
     </Grid>
 </Page>

@@ -24,5 +24,12 @@ namespace CardMemoryGame
         {
             InitializeComponent();
         }
+
+        private void Start_Button_Click(object sender, RoutedEventArgs e)
+        {
+            GamePage gamePage = new GamePage();
+            NavigationService.Navigate(gamePage);
+        }
     }
+
 }

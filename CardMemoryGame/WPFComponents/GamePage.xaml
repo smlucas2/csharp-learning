@@ -9,6 +9,6 @@
       Title="GamePage">
 
     <Grid>
-        
+        <Button x:Name="End_Button" Click="End_Button_Click" Content="END" HorizontalAlignment="Center" Height="130" VerticalAlignment="Center" Width="352" Background="#FFE22310"/>
     </Grid>
 </Page>
